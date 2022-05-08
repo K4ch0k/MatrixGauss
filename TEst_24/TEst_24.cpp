@@ -167,17 +167,19 @@ int main(int argc, char** argv) {
 	for (int i = 0;i < m-1;i++)
 	{
 		independtmp = independ;
-		printf("x%d = %3.3f", i+1, resM[i]);
+		if (i < n)
+		{
+			printf("x%d = %3.3f", i + 1, resM[i]);
+		}
+		else
+		{
+			printf("x%d - Независимая", i + 1);
+			independtmp = 0;
+		}
 		if (independtmp > 0)
 		{
 			for (int j = m-2; j >=i ; j--)
 			{
-				if (i == j)
-				{
-					printf(" - Независимая");
-					independtmp = 0;
-					break;
-				}
 				printf(" + ((%3.3fx%d)/(%3.3f))", M[i][j], j+1, M[i][m-1]);
 				independtmp--;
 				if (independtmp == 0)
