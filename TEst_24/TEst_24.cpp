@@ -164,7 +164,7 @@ int main(int argc, char** argv) {
 	}
 
 	int independtmp;
-	for (int i = 0;i < m-1;i++)
+	for (int i = 0; i < m - 1; i++)
 	{
 		independtmp = independ;
 		if (i < n)
@@ -178,7 +178,7 @@ int main(int argc, char** argv) {
 		}
 		if (independtmp > 0)
 		{
-			for (int j = m-2; j >=i ; j--)
+			for (int j = m - 2; j >= i; j--)
 			{
 				if (signbit(M[i][j]))
 					printf(" + %3.3fx%d", fabs(M[i][j]), j + 1);
