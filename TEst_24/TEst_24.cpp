@@ -184,6 +184,12 @@ int main(int argc, char** argv) {
 					printf(" + %3.3fx%d", fabs(M[i][j]), j + 1);
 				else
 					printf(" - %3.3fx%d", M[i][j], j + 1);
+					break;
+				}
+				printf(" + ((%3.3fx%d)/(%3.3f))", M[i][j], j+1, M[i][m-1]);
+					break;
+				}
+				printf(" + ((%3.3fx%d)/(%3.3f))", M[i][j], j+1, M[i][m-1]);
 				independtmp--;
 				if (independtmp == 0)
 					break;
