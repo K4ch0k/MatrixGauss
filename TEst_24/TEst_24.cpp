@@ -40,8 +40,8 @@ void EntryMatrix(float**& M, int& n, int& m)
 		printf("Не удалось прочитать переменные, повторите попытку\n");
 		scanf("%*[^\n]");
 	}
-	m += 1;
 
+	m ++;
 	printf("\nВведите коэффициенты a и b из матрицы:\n");
 
 	M = (float**)malloc(sizeof(float*) * n);
@@ -78,14 +78,13 @@ int main(int argc, char** argv) {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	float** M;
+	float** M;		//	Сам массив
 	int n; 			//	количество строк
 	int m; 			//	количество столбцов
 	int flag = 1;	//	Флаг
 	float* resM;	//	Ответ для каждой переменной
 	int independ;	//	Разница кол-ва переменных и кол-ва строк
 	int quant;		//	
-	float coeff;	//
 	float tmp;		//
 
 	while (flag != 0)
@@ -100,9 +99,7 @@ int main(int argc, char** argv) {
 
 	independ = (m - 1) - n;
 	if (independ > 0)
-	{
 		printf("\nКак минимум %d переменных могут быть независимые\n\n", (m - 1) - n);
-	}
 	
 	resM = (float*)malloc(sizeof(float*) * (m - 1));
 	for (int i = 0; i < m - 1; i++)
@@ -117,9 +114,7 @@ int main(int argc, char** argv) {
 		for (int itmp = i + 1; itmp < n; itmp++)
 		{
 			if (fabs(M[itmp][i]) > fabs(M[i][i]))
-			{
 				ChangePosition(M, i, itmp, m);
-			}
 		}
 		if (M[i][i] != 0)
 		{
@@ -131,10 +126,10 @@ int main(int argc, char** argv) {
 			}
 			for (quant; quant != 0; quant--)
 			{
-				coeff = -(M[n - quant][i] / M[i][i]);
+				tmp = -(M[n - quant][i] / M[i][i]);
 				for (int j = 0; j < m; j++)
 				{
-					M[n - quant][j] = M[n - quant][j] + (M[i][j] * coeff);
+					M[n - quant][j] = M[n - quant][j] + (M[i][j] * tmp);
 				}
 			}
 		}
@@ -150,9 +145,7 @@ int main(int argc, char** argv) {
 		for (int j = m-2; j >= i; j--)
 		{
 			if (M[i][j] != 0 && i != j)
-			{
 				tmp -= (M[i][j] * resM[j]);
-			}
 			if (i == j)
 			{
 				if (M[i][j] == 0)
@@ -163,36 +156,43 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	int independtmp;
 	for (int i = 0; i < m - 1; i++)
 	{
-		independtmp = independ;
+		tmp = (float)independ;
 		if (i < n)
 		{
-			printf("x%d = %3.3f", i + 1, resM[i]);
+			printf("\nx%d = %3.3f", i + 1, resM[i]);
+			if (resM[i] == 0)
+				continue;
 		}
 		else
 		{
-			printf("x%d - Независимая", i + 1);
-			independtmp = 0;
+			printf("\nx%d - Независимая", i + 1);
+			tmp = 0;
 		}
-		if (independtmp > 0)
+		if (tmp > 0)
 		{
 			for (int j = m - 2; j >= i; j--)
 			{
 				if (signbit(M[i][j]))
-					printf(" + %3.3fx%d", fabs(M[i][j]), j + 1);
+					printf(" + (%3.3fx%d / %3.3f)", fabs(M[i][j]), j + 1, M[i][i]);
 				else
-					printf(" - %3.3fx%d", M[i][j], j + 1);
-				independtmp--;
-				if (independtmp == 0)
+					printf(" - (%3.3fx%d / %3.3f)", M[i][j], j + 1, M[i][i]);
+
+				for (int itmp = m - 2; itmp > i; itmp--)
+				{
+					if (itmp <= n - 1 && M[itmp][itmp] != 0)
+					{
+						printf(" + (%3.3f) * x%d(независимая часть)", M[i][itmp], itmp + 1);
+					}
+				}
+				tmp--;
+				if (tmp == 0)
 					break;
 			}
-			printf(" + (%3.3f)", M[i][m - 1]);
 		}
-		printf("\n");
 	}
-
+	printf("\n");
 	system("pause");
 	return 0;
 }
